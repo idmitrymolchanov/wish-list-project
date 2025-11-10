@@ -1,0 +1,491 @@
+openapi: 3.0.1
+info:
+  title: newgor-wishlist
+  description: Программный интерфейс сервиса "Вишлист"
+  version: 0.0.1
+servers:
+  - url: '{schema}://{host}/{basePath}'
+    variables:
+      schema:
+        default: https
+        enum:
+          - http
+          - https
+      host:
+        default: todo
+      basePath:
+        default: newgor-wishlist
+tags:
+  - name: Items
+    description: Методы для чтения и создания предметов вишлиста
+paths:
+  /wishlist:
+    get:
+      tags:
+        - Items
+      summary: Получить список предметов
+      description: Метод позволяет получить список предметов вишлиста по заданным параметрам запроса. Если по заданным параметрам предметы не найдены, то возвращается пустой массив.
+      operationId: getItems
+      security:
+        - Authorization: []
+      parameters:
+        - name: statusCode
+          in: query
+          description: Код статуса
+          required: false
+          schema:
+            type: string
+            description: Код статуса
+        - name: createDateFrom
+          in: query
+          description: Созданы после
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: createDateTo
+          in: query
+          description: Созданы до
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Количество записей на странице
+          required: false
+          schema:
+            type: integer
+            description: Количество записей на странице
+            format: int32
+            minimum: 1
+            default: 50
+        - name: offset
+          in: query
+          description: Смещение от начала списка
+          required: false
+          schema:
+            type: integer
+            description: Смещение от начала списка
+            format: int32
+            minimum: 0
+            default: 0
+        - name: showReservedStatus
+          in: query
+          description: показывать резерв
+          required: false
+          schema:
+            type: boolean
+            description: показывать резерв
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    description: Общее количество записей
+                    format: int32
+                    minimum: 0
+                  list:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItemBaseInfo'
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+    post:
+      tags:
+        - Items
+      summary: Создать новый предмет
+      operationId: createItem
+      security:
+        - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+  /wishlist/{id}:
+    get:
+      tags:
+        - Items
+      summary: Получить предмет вишлиста по id
+      description: Получение подробной информации о предмете по указанному идентификатору.
+      operationId: getItemById
+      security:
+        - Authorization: []
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор предмета
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '404':
+          description: |
+            - Not Found,
+              code: 00002,
+              message: Предмет не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+    patch:
+      tags:
+        - Items
+      summary: Обновить предмет
+      description: Метод для изменения предмета
+      operationId: patchItem
+      security:
+        - Authorization: []
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор предмета
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemUpdate'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '404':
+          description: |
+            - Not Found,
+              code: 14001,
+              message: Предмет не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+
+  /wishlist/status:
+    post:
+      tags:
+        - Items
+      summary: Обновить статус предмета
+      operationId: setItemStatus
+      security:
+        - Authorization: [ ]
+      parameters:
+        - name: statusCode
+          in: query
+          description: Код статуса
+          required: false
+          schema:
+            type: string
+            description: Код статуса
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+
+  /wishlist/reserve:
+    post:
+      tags:
+        - Items
+      summary: Изменить статус резерва
+      operationId: reserveItem
+      security:
+        - Authorization: [ ]
+      parameters:
+        - name: reserved
+          in: query
+          description: статус резерва
+          required: true
+          schema:
+            type: boolean
+            description: статус резерва
+      responses:
+        '201':
+          description: OK
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+
+components:
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CommonFault:
+      type: object
+      description: Тело для общего описания ошибок
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Дата и время ошибки (UTC+0)
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор ошибки
+        path:
+          type: string
+          description: Путь
+        statusCode:
+          type: integer
+          format: int32
+          description: HTTP Status Code
+        detail:
+          type: string
+          description: Описание ошибки
+        code:
+          type: string
+          description: Бизнеc-код ошибки
+        message:
+          type: string
+          description: Бизнес-описание ошибки
+
+    ItemStatus:
+      type: string
+      description: Статус предмета в вишлисте
+      enum:
+        - DRAFT
+        - OPEN
+        - COMPLETED
+        - CANCELED
+
+    ItemBaseInfo:
+      type: object
+      description: Базовая информация о предмете
+      properties:
+        id:
+          type: string
+          description: Идентификатор в БД сервиса
+          format: uuid
+        createDate:
+          type: string
+          description: Дата и время создания в БД сервиса
+          format: date-time
+        lastUpdateDate:
+          type: string
+          description: Дата последнего обновления в БД сервиса
+          format: date-time
+        name:
+          type: string
+          description: наименование
+        amount:
+          type: string
+          description: сумма
+        reserved:
+          type: boolean
+          description: зарезервирован ли товар
+
+    Item:
+      required:
+        - currency
+        - name
+      type: object
+      description: Предмет
+      allOf:
+        - $ref: "#/components/schemas/ItemBaseInfo"
+      properties:
+        currency:
+          type: string
+          description: валюта
+        description:
+          type: string
+          description: описание
+        linkToSite:
+          type: string
+          description: ссылка на сайт
+        priority:
+          type: string
+          description: приоритет
+        image:
+          type: string
+          description: изображение предмета
+        statusCode:
+          $ref: '#/components/schemas/ItemStatus'
+        statusName:
+          type: string
+          description: наименование статуса
+
+    ItemUpdate:
+      type: object
+      description: Предмет
+      allOf:
+        - $ref: "#/components/schemas/ItemBaseInfo"
+      properties:
+        currency:
+          type: string
+          description: валюта
+        description:
+          type: string
+          description: описание
+        linkToSite:
+          type: string
+          description: ссылка на сайт
+        priority:
+          type: string
+          description: приоритет
+        image:
+          type: string
+          description: изображение предмета
