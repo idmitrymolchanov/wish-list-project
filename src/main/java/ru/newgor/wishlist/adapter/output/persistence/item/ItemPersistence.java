@@ -33,9 +33,12 @@ public class ItemPersistence {
     }
 
     public List<ItemBaseInfoModel> getItems(String statusCode, Instant createDateFrom, Instant createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+        System.out.println("kmknknknnkkn");
         var spec = ItemSpecification.filterByParams(statusCode, createDateFrom, createDateTo);
         var pageable = ItemSpecification.getPageable(limit, offset);
         var itemEntityPage = repository.findAll(spec, pageable);
+
+        System.out.println(itemEntityPage.getContent().size());
 
         return mapper.toItemBaseInfoList(itemEntityPage.getContent());
     }

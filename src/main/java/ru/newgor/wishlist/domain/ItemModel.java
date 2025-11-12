@@ -7,6 +7,7 @@ import lombok.Setter;
 import ru.newgor.wishlist.domain.enums.ItemStatusEnum;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,6 +15,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class ItemModel {
 
+    private UUID id;
     private String name;
     private String amount;
     private String currency;

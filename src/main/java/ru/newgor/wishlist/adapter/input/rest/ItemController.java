@@ -2,6 +2,7 @@ package ru.newgor.wishlist.adapter.input.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import ru.newgor.wishlist.adapter.input.api.ItemsApi;
 import ru.newgor.wishlist.adapter.input.api.dto.CreateItem200Response;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class ItemController implements ItemsApi {
 
     private final ItemInputPort inputPort;

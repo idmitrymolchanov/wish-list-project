@@ -29,6 +29,6 @@ public class ItemService implements ItemInputPort {
 
     @Override
     public List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
-        return persistence.getItems(statusCode, createDateFrom.toInstant(), createDateTo.toInstant(), limit, offset, showReservedStatus);
+        return persistence.getItems(statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus);
     }
 }

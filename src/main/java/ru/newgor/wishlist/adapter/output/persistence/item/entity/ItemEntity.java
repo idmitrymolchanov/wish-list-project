@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +33,12 @@ public class ItemEntity extends AuditableEntity {
     private String description;
     @Column(name = "link_to_site")
     private String linkToSite;
-    private String priority;
-    private String image;
+    private String priority; // todo -> изменить формат на int и добавить prioriryName
     private String statusCode;
     private String statusName;
     private boolean reserved;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String image;
 }

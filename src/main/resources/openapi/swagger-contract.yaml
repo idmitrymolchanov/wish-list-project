@@ -420,14 +420,17 @@ components:
           type: string
           description: Идентификатор в БД сервиса
           format: uuid
+          readOnly: true
         createDate:
           type: string
           description: Дата и время создания в БД сервиса
           format: date-time
+          readOnly: true
         lastUpdateDate:
           type: string
           description: Дата последнего обновления в БД сервиса
           format: date-time
+          readOnly: true
         name:
           type: string
           description: наименование

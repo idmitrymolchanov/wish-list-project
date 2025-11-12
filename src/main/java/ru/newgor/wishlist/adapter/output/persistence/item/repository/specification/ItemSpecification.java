@@ -19,6 +19,7 @@ public class ItemSpecification {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            System.out.println(statusCode + " " + createDateFrom + " " + createDateTo);
             if (statusCode != null) {
                 predicates.add(criteriaBuilder.equal(root.get("statusCode"), statusCode));
             }
