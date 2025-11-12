@@ -1,7 +1,4 @@
 databaseChangeLog:
   - include:
-      file: V1__Create_Task_Table.sql
-      relativeToChangelogFile: true
-  - include:
-      file: V2_Alter_Table_Task.sql
+      file: V1__Create_Item_Table.sql
       relativeToChangelogFile: true

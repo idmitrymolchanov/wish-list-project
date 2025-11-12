@@ -2,4 +2,5 @@
 /.gradle
 /build
 /.local
+/data
 .DS_Store

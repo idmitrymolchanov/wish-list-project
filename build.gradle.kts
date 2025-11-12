@@ -29,6 +29,7 @@ object Version {
 
 dependencies {
     // common
+//    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.mapstruct:mapstruct:${Version.mapstruct}")
     annotationProcessor("org.mapstruct:mapstruct-processor:${Version.mapstruct}")
     compileOnly("org.projectlombok:lombok")

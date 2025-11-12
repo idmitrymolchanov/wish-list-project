@@ -1,6 +1,6 @@
 package ru.newgor.wishlist.usecase.port.input;
 
-import ru.newgor.wishlist.domain.ItemBaseInfo;
+import ru.newgor.wishlist.domain.ItemBaseInfoModel;
 import ru.newgor.wishlist.domain.ItemModel;
 
 import java.time.OffsetDateTime;
@@ -13,6 +13,6 @@ public interface ItemInputPort {
 
     ItemModel getItemById(UUID id);
 
-    List<ItemBaseInfo> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus);
+    List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus);
 
 }

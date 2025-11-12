@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.newgor.wishlist.adapter.output.persistence.item.mapper.ItemMapper;
 import ru.newgor.wishlist.adapter.output.persistence.item.repository.ItemRepository;
 import ru.newgor.wishlist.adapter.output.persistence.item.repository.specification.ItemSpecification;
-import ru.newgor.wishlist.domain.ItemBaseInfo;
+import ru.newgor.wishlist.domain.ItemBaseInfoModel;
 import ru.newgor.wishlist.domain.ItemModel;
 import ru.newgor.wishlist.domain.exception.ItemNotFoundException;
 
@@ -21,8 +21,10 @@ public class ItemPersistence {
     private final ItemRepository repository;
 
     public UUID createItem(ItemModel item) {
+        System.out.println("++++ " + item.getCurrency());
         var itemEntity = mapper.toItemEntity(item);
-        return repository.save(itemEntity).getId();
+        System.out.println("++++ " + itemEntity.getCurrency());
+        return repository.saveAndFlush(itemEntity).getId();
     }
 
     public ItemModel getItemById(UUID id) {
@@ -30,7 +32,7 @@ public class ItemPersistence {
         return mapper.toItemModel(itemEntity);
     }
 
-    public List<ItemBaseInfo> getItems(String statusCode, Instant createDateFrom, Instant createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+    public List<ItemBaseInfoModel> getItems(String statusCode, Instant createDateFrom, Instant createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
         var spec = ItemSpecification.filterByParams(statusCode, createDateFrom, createDateTo);
         var pageable = ItemSpecification.getPageable(limit, offset);
         var itemEntityPage = repository.findAll(spec, pageable);

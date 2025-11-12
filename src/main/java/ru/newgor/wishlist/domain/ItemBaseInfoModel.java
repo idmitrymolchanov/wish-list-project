@@ -1,6 +1,6 @@
 package ru.newgor.wishlist.domain;
 
-public record ItemBaseInfo(
+public record ItemBaseInfoModel(
         String name,
         String amount,
         String currency

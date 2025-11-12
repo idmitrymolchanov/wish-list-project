@@ -3,7 +3,7 @@ package ru.newgor.wishlist.usecase.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.newgor.wishlist.adapter.output.persistence.item.ItemPersistence;
-import ru.newgor.wishlist.domain.ItemBaseInfo;
+import ru.newgor.wishlist.domain.ItemBaseInfoModel;
 import ru.newgor.wishlist.domain.ItemModel;
 import ru.newgor.wishlist.usecase.port.input.ItemInputPort;
 
@@ -28,7 +28,7 @@ public class ItemService implements ItemInputPort {
     }
 
     @Override
-    public List<ItemBaseInfo> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+    public List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
         return persistence.getItems(statusCode, createDateFrom.toInstant(), createDateTo.toInstant(), limit, offset, showReservedStatus);
     }
 }
