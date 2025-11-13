@@ -8,6 +8,8 @@ public record ItemBaseInfoModel(
         String name,
         String amount,
         boolean reserved,
-        Instant createDate
+        Instant createDate,
+        int priority,
+        String priorityName
 ) {
 }

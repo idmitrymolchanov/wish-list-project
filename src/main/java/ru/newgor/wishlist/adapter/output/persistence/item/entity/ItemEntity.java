@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.newgor.wishlist.domain.enums.ItemStatusEnum;
 
 import java.util.UUID;
 
@@ -33,7 +32,8 @@ public class ItemEntity extends AuditableEntity {
     private String description;
     @Column(name = "link_to_site")
     private String linkToSite;
-    private String priority; // todo -> изменить формат на int и добавить prioriryName
+    private int priority;
+    private String priorityName;
     private String statusCode;
     private String statusName;
     private boolean reserved;

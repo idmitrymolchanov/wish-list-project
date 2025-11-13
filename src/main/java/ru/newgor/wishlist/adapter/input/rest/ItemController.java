@@ -9,6 +9,7 @@ import ru.newgor.wishlist.adapter.input.api.dto.CreateItem200Response;
 import ru.newgor.wishlist.adapter.input.api.dto.GetItems200Response;
 import ru.newgor.wishlist.adapter.input.api.dto.Item;
 import ru.newgor.wishlist.adapter.input.api.dto.ItemUpdate;
+import ru.newgor.wishlist.adapter.input.api.dto.SortField;
 import ru.newgor.wishlist.adapter.input.rest.mapper.ItemModelMapper;
 import ru.newgor.wishlist.usecase.port.input.ItemInputPort;
 
@@ -42,23 +43,24 @@ public class ItemController implements ItemsApi {
     }
 
     @Override
-    public GetItems200Response getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+    public GetItems200Response getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus, SortField sortField) {
         var response = inputPort.getItems(statusCode, createDateFrom, createDateTo, limit, offset, showReservedStatus);
         return mapper.toGetItems200Response(response);
     }
 
     @Override
     public void patchItem(UUID id, ItemUpdate itemUpdate) {
-
+        var request = mapper.toItemUpdateModel(itemUpdate);
+        inputPort.patchItem(id, request);
     }
 
     @Override
-    public void reserveItem(Boolean reserved) {
-
+    public void reserveItem(UUID id, Boolean reserved) {
+        inputPort.reserveItem(id, reserved);
     }
 
     @Override
-    public void setItemStatus(String statusCode) {
-
+    public void setItemStatus(UUID id, String statusCode) {
+        inputPort.setItemStatus(id, statusCode);
     }
 }

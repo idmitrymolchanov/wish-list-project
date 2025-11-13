@@ -77,6 +77,13 @@ paths:
           schema:
             type: boolean
             description: показывать резерв
+        - name: sortField
+          in: query
+          description: показывать резерв
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortField'
+
       responses:
         '200':
           description: OK
@@ -277,7 +284,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommonFault'
 
-  /wishlist/status:
+  /wishlist/{id}/status:
     post:
       tags:
         - Items
@@ -286,6 +293,13 @@ paths:
       security:
         - Authorization: [ ]
       parameters:
+        - name: id
+          in: path
+          description: Идентификатор предмета
+          required: true
+          schema:
+            type: string
+            format: uuid
         - name: statusCode
           in: query
           description: Код статуса
@@ -322,7 +336,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommonFault'
 
-  /wishlist/reserve:
+  /wishlist/{id}/reserve:
     post:
       tags:
         - Items
@@ -331,6 +345,13 @@ paths:
       security:
         - Authorization: [ ]
       parameters:
+        - name: id
+          in: path
+          description: Идентификатор предмета
+          required: true
+          schema:
+            type: string
+            format: uuid
         - name: reserved
           in: query
           description: статус резерва
@@ -412,6 +433,13 @@ components:
         - COMPLETED
         - CANCELED
 
+    SortField:
+      type: string
+      description: Статус предмета в вишлисте
+      enum:
+        - CREATE_DATE
+        - PRIORITY
+
     ItemBaseInfo:
       type: object
       description: Базовая информация о предмете
@@ -420,17 +448,14 @@ components:
           type: string
           description: Идентификатор в БД сервиса
           format: uuid
-          readOnly: true
         createDate:
           type: string
           description: Дата и время создания в БД сервиса
           format: date-time
-          readOnly: true
         lastUpdateDate:
           type: string
           description: Дата последнего обновления в БД сервиса
           format: date-time
-          readOnly: true
         name:
           type: string
           description: наименование
@@ -440,6 +465,12 @@ components:
         reserved:
           type: boolean
           description: зарезервирован ли товар
+        priority:
+          type: integer
+          description: код приоритета 1-10
+        priorityName:
+          type: string
+          description: наименование приоритета
 
     Item:
       required:
@@ -459,9 +490,6 @@ components:
         linkToSite:
           type: string
           description: ссылка на сайт
-        priority:
-          type: string
-          description: приоритет
         image:
           type: string
           description: изображение предмета

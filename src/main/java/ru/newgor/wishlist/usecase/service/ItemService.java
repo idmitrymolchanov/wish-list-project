@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.newgor.wishlist.adapter.output.persistence.item.ItemPersistence;
 import ru.newgor.wishlist.domain.ItemBaseInfoModel;
 import ru.newgor.wishlist.domain.ItemModel;
+import ru.newgor.wishlist.domain.ItemUpdateModel;
 import ru.newgor.wishlist.usecase.port.input.ItemInputPort;
 
 import java.time.OffsetDateTime;
@@ -19,6 +20,7 @@ public class ItemService implements ItemInputPort {
 
     @Override
     public UUID createItem(ItemModel item) {
+        item.setPriorityName(definePriorityName(item.getPriority()));
         return persistence.createItem(item);
     }
 
@@ -30,5 +32,33 @@ public class ItemService implements ItemInputPort {
     @Override
     public List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
         return persistence.getItems(statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus);
+    }
+
+    @Override
+    public void patchItem(UUID id, ItemUpdateModel itemUpdate) {
+
+    }
+
+    @Override
+    public void reserveItem(UUID id, Boolean reserved) {
+        persistence.reserveItem(id, reserved);
+    }
+
+    @Override
+    public void setItemStatus(UUID id, String statusCode) {
+        persistence.setItemStatus(id, statusCode);
+    }
+
+    private String definePriorityName(int priority) {
+        if(priority >= 0 && priority < 4) {
+            return "low";
+        }
+        if(priority >= 4 && priority < 8) {
+            return "medium";
+        }
+        if(priority >= 8 && priority < 11) {
+            return "high";
+        }
+        return "undefined";
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
 
-    @Mapping(target = "statusCode", constant = "DRAFT")
+    @Mapping(target = "statusCode", constant = "OPEN")
     @Mapping(target = "currency", source = "currency")
     ItemEntity toItemEntity(ItemModel itemModel);
 
