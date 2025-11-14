@@ -21,8 +21,9 @@ public class ItemPersistence {
     private final ItemMapper mapper;
     private final ItemRepository repository;
 
-    public UUID createItem(ItemModel item) {
+    public UUID createItem(ItemModel item, String userLogin) {
         var itemEntity = mapper.toItemEntity(item);
+        itemEntity.setUserLogin(userLogin);
         return repository.save(itemEntity).getId();
     }
 
@@ -31,12 +32,10 @@ public class ItemPersistence {
         return mapper.toItemModel(itemEntity);
     }
 
-    public List<ItemBaseInfoModel> getItems(String statusCode, Instant createDateFrom, Instant createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
-        var spec = ItemSpecification.filterByParams(statusCode, createDateFrom, createDateTo);
+    public List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, Instant createDateFrom, Instant createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+        var spec = ItemSpecification.filterByParams(userLogin, statusCode, createDateFrom, createDateTo);
         var pageable = ItemSpecification.getPageable(limit, offset);
         var itemEntityPage = repository.findAll(spec, pageable);
-
-        System.out.println(itemEntityPage.getContent().size());
 
         return mapper.toItemBaseInfoList(itemEntityPage.getContent());
     }

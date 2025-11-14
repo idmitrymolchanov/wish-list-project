@@ -1,4 +1,4 @@
-package ru.newgor.wishlist.adapter.input.rest.mapper;
+package ru.newgor.wishlist.adapter.input.rest.item.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
