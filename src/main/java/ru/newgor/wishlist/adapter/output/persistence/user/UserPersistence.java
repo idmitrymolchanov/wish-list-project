@@ -1,9 +1,6 @@
 package ru.newgor.wishlist.adapter.output.persistence.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.newgor.wishlist.adapter.output.persistence.user.entity.FollowerRelationEntity;
@@ -13,6 +10,7 @@ import ru.newgor.wishlist.adapter.output.persistence.user.repository.FollowerRel
 import ru.newgor.wishlist.adapter.output.persistence.user.repository.UserRepository;
 import ru.newgor.wishlist.domain.UserModel;
 import ru.newgor.wishlist.domain.exception.UserAlreadyExistsException;
+import ru.newgor.wishlist.domain.exception.UserNotFoundException;
 import ru.newgor.wishlist.domain.exception.WrongPasswordException;
 
 import java.util.List;
@@ -49,13 +47,13 @@ public class UserPersistence {
     }
 
     public UserModel getUserByLogin(String login) {
-        var entity = userRepository.findByLogin(login).orElseThrow(); // todo
+        var entity = userRepository.findByLogin(login).orElseThrow();
         return userMapper.toUserModel(entity);
     }
 
     public void loginUser(UserModel request) {
         var login = request.getLogin();
-        UserEntity user = userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
+        UserEntity user = userRepository.findByLogin(login).orElseThrow(() -> new UserNotFoundException(login));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new WrongPasswordException(login);
         }

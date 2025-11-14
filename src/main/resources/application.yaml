@@ -5,22 +5,35 @@ spring:
     allow-circular-references: true
 
   datasource:
-    url: jdbc:h2:mem:wishlist
+    url: jdbc:h2:file:./data/wishlist;CIPHER=AES
     username: sa
-    password:
+    password: password filepassword
+    driver-class-name: org.h2.Driver
 
   jpa:
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+#  datasource:
+#    url: jdbc:h2:mem:wishlist
+#    username: sa
+#    password:
+#
+#  jpa:
+#    defer-datasource-initialization: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
 
   liquibase:
     enabled: false
     change-log: classpath:db/changelog/db.changelog-master.yaml
-    initialize-on-startup: false
 
   h2:
     console:
