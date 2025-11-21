@@ -10,11 +10,11 @@ import java.util.UUID;
 
 public interface ItemInputPort {
 
-    UUID createItem(ItemModel item);
+    UUID createItem(ItemModel item, String userLogin);
 
     ItemModel getItemById(UUID id);
 
-    List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus);
+    List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus);
 
     void patchItem(UUID id, ItemUpdateModel itemUpdate);
 

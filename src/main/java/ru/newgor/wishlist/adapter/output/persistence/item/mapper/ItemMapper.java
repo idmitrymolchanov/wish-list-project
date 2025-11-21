@@ -12,7 +12,7 @@ import java.util.List;
 public interface ItemMapper {
 
     @Mapping(target = "statusCode", constant = "OPEN")
-    @Mapping(target = "currency", source = "currency")
+//    @Mapping(target = "currency", source = "currency")
     ItemEntity toItemEntity(ItemModel itemModel);
 
     ItemModel toItemModel(ItemEntity itemEntity);

@@ -1,7 +1,16 @@
 package ru.newgor.wishlist.domain;
 
-public record UserModel(
-        String login,
-        String password
-) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserModel {
+
+        private String login;
+        private String password;
 }

@@ -29,14 +29,23 @@ object Version {
 
 dependencies {
     // common
-//    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    implementation("org.mapstruct:mapstruct:${Version.mapstruct}")
-    annotationProcessor("org.mapstruct:mapstruct-processor:${Version.mapstruct}")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+
+    implementation("org.mapstruct:mapstruct:${Version.mapstruct}")
+    annotationProcessor("org.mapstruct:mapstruct-processor:${Version.mapstruct}")
+
+    implementation("org.springframework.boot:spring-boot-starter-security")
+//    implementation("org.mapstruct:mapstruct:${Version.mapstruct}")
+//    annotationProcessor("org.mapstruct:mapstruct-processor:${Version.mapstruct}")
+//    compileOnly("org.projectlombok:lombok")
+//    annotationProcessor("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.openapitools:jackson-databind-nullable:0.2.6")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("io.jsonwebtoken:jjwt:0.13.0")
 
     //db
     runtimeOnly("com.h2database:h2")
@@ -85,8 +94,8 @@ openApiGenerate {
     )
 }
 
-tasks.named("openApiGenerate") {
-    mustRunAfter("compileJava")
+tasks.named("compileJava") {
+    dependsOn("openApiGenerate")
 }
 
 sourceSets {

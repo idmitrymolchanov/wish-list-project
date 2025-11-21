@@ -19,9 +19,9 @@ public class ItemService implements ItemInputPort {
     private final ItemPersistence persistence; // todo -> outputPort
 
     @Override
-    public UUID createItem(ItemModel item) {
+    public UUID createItem(ItemModel item, String userLogin) {
         item.setPriorityName(definePriorityName(item.getPriority()));
-        return persistence.createItem(item);
+        return persistence.createItem(item, userLogin);
     }
 
     @Override
@@ -30,8 +30,8 @@ public class ItemService implements ItemInputPort {
     }
 
     @Override
-    public List<ItemBaseInfoModel> getItems(String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
-        return persistence.getItems(statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus);
+    public List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
+        return persistence.getItems(userLogin, statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus);
     }
 
     @Override

@@ -28,4 +28,5 @@ public class ItemModel {
     private boolean reserved;
     private Instant createDate;
     private Instant lastUpdateDate;
+    private String userLogin;
 }

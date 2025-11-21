@@ -15,11 +15,12 @@ import java.util.List;
 @UtilityClass
 public class ItemSpecification {
 
-    public static Specification<ItemEntity> filterByParams(String statusCode, Instant createDateFrom, Instant createDateTo) {
+    public static Specification<ItemEntity> filterByParams(String userLogin, String statusCode, Instant createDateFrom, Instant createDateTo) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            System.out.println(statusCode + " " + createDateFrom + " " + createDateTo);
+            predicates.add(criteriaBuilder.equal(root.get("userLogin"), userLogin));
+
             if (statusCode != null) {
                 predicates.add(criteriaBuilder.equal(root.get("statusCode"), statusCode));
             }

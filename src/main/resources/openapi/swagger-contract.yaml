@@ -29,6 +29,13 @@ paths:
       security:
         - Authorization: []
       parameters:
+        - name: userLogin
+          in: query
+          description: логин пользователя
+          required: true
+          schema:
+            type: string
+            description: логин пользователя
         - name: statusCode
           in: query
           description: Код статуса
@@ -498,6 +505,10 @@ components:
         statusName:
           type: string
           description: наименование статуса
+        userLogin:
+          type: string
+          description: логин пользователя
+
 
     ItemUpdate:
       type: object
