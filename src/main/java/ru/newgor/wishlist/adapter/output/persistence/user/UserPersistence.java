@@ -58,4 +58,10 @@ public class UserPersistence {
             throw new WrongPasswordException(login);
         }
     }
+
+    public List<String> getAllUsers() {
+        System.out.println(userRepository.findAll());
+        return userRepository.findAll().stream().map(u->u.getLogin()).toList();
+    }
 }
+// jdbc:h2:/Users/home/Desktop/db/wishlist

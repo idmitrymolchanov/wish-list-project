@@ -23,7 +23,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class ItemController implements ItemsApi {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";

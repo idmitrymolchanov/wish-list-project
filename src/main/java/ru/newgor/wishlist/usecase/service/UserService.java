@@ -31,4 +31,8 @@ public class UserService {
     public void loginUser(UserModel request) {
         userPersistence.loginUser(request);
     }
+
+    public List<String> getAllUsers() {
+        return userPersistence.getAllUsers();
+    }
 }

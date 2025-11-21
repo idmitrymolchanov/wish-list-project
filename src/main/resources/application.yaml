@@ -40,5 +40,5 @@ spring:
       enabled: true
       path: /h2-console
 
-#  в .env файле,
-#или задавать через системную переменную среды (например в Linux: export DB_PASSWORD='dbpass secretkey').
+server:
+  port: 8085
