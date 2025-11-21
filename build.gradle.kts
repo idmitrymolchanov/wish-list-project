@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ru.newgor"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 description = "Wishlist project"
 
 java {
@@ -29,7 +29,6 @@ object Version {
 
 dependencies {
     // common
-
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")

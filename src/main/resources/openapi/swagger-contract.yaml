@@ -19,7 +19,7 @@ tags:
   - name: Items
     description: Методы для чтения и создания предметов вишлиста
 paths:
-  /wishlist:
+  /wishlist/item:
     get:
       tags:
         - Items
@@ -139,7 +139,7 @@ paths:
       summary: Создать новый предмет
       operationId: createItem
       security:
-        - Authorization: []
+        - Authorization: [ ]
       requestBody:
         content:
           application/json:
@@ -181,7 +181,129 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommonFault'
-  /wishlist/{id}:
+  /wishlist/item/{id}/image:
+    get:
+      tags:
+        - Items
+      summary: Получить изображение предмета
+      operationId: getItemImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор предмета
+      responses:
+        '200':
+          description: Изображение предмета
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: |
+            - code: 00002
+              message: Изображение не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '400':
+          description: |
+            - code: 00001
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+
+    post:
+      tags:
+        - Items
+      summary: Загрузить/обновить изображение предмета
+      operationId: uploadItemImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Идентификатор предмета
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - metadata
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Изображение предмета
+                metadata:
+                  type: string
+                  description: JSON с метаинформацией о предмете
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '409':
+          description: |
+            - code: 00003
+              message: При выполнении операции произошел сбой. Для уточнения деталей ошибки необходимо выполнить анализ логов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+
+  /wishlist/item/{id}:
     get:
       tags:
         - Items
@@ -291,7 +413,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommonFault'
 
-  /wishlist/{id}/status:
+  /wishlist/item/{id}/status:
     post:
       tags:
         - Items
@@ -343,7 +465,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommonFault'
 
-  /wishlist/{id}/reserve:
+  /wishlist/item/{id}/reserve:
     post:
       tags:
         - Items

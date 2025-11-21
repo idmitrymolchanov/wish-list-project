@@ -1,12 +1,15 @@
 package ru.newgor.wishlist.adapter.input.rest.item;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ru.newgor.wishlist.adapter.input.api.ItemsApi;
 import ru.newgor.wishlist.adapter.input.api.dto.CreateItem200Response;
 import ru.newgor.wishlist.adapter.input.api.dto.GetItems200Response;
@@ -15,6 +18,7 @@ import ru.newgor.wishlist.adapter.input.api.dto.ItemUpdate;
 import ru.newgor.wishlist.adapter.input.api.dto.SortField;
 import ru.newgor.wishlist.adapter.input.rest.item.mapper.ItemModelMapper;
 import ru.newgor.wishlist.usecase.port.input.ItemInputPort;
+import ru.newgor.wishlist.usecase.service.ImageService;
 import ru.newgor.wishlist.usecase.service.JwtService;
 
 import java.time.OffsetDateTime;
@@ -30,8 +34,11 @@ public class ItemController implements ItemsApi {
 
     private final ItemInputPort inputPort;
     private final ItemModelMapper mapper;
-    private final HttpServletRequest request;
     private final JwtService jwtService;
+    private final ImageService imageService;
+
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
 
     @Override
     public CreateItem200Response createItem(Item item) {
@@ -50,6 +57,17 @@ public class ItemController implements ItemsApi {
     public Item getItemById(UUID id) {
         var response = inputPort.getItemById(id);
         return mapper.toItemDto(response);
+    }
+
+    @Override
+    public Resource getItemImage(UUID id) {
+        log.debug("Got image content with id {}", id);
+        var result = imageService.getImage(id);
+        var contentDisposition =
+                ContentDisposition.inline().filename(result.getFilename()).build();
+
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        return result;
     }
 
     @Override
@@ -74,13 +92,10 @@ public class ItemController implements ItemsApi {
         inputPort.setItemStatus(id, statusCode);
     }
 
-    @PostMapping(path = "/lal")
-    public ResponseEntity<CreateItem200Response> createItem() {
-
-        var response = new CreateItem200Response();
-        response.setId(UUID.randomUUID());
-
-        return ResponseEntity.ok(response);
+    @Override
+    public CreateItem200Response uploadItemImage(UUID id, MultipartFile file, String metadata) {
+        imageService.saveFile(file, id);
+        return null;
     }
 
     private String getAuthToken() {
