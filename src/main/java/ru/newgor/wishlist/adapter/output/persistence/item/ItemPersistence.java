@@ -37,7 +37,7 @@ public class ItemPersistence {
         var pageable = ItemSpecification.getPageable(limit, offset);
         var itemEntityPage = repository.findAll(spec, pageable);
 
-        return mapper.toItemBaseInfoList(itemEntityPage.getContent());
+        return mapper.toItemBaseInfoList(itemEntityPage.getContent(), showReservedStatus);
     }
 
     public void reserveItem(UUID id, Boolean reserved) {
@@ -46,8 +46,11 @@ public class ItemPersistence {
         repository.save(itemEntity);
     }
 
-    public void setItemStatus(UUID id, String statusCode) {
+    public void setItemStatus(UUID id, String statusCode, String userLogin) {
         var itemEntity = findEntityById(id);
+        if(!itemEntity.getUserLogin().equals(userLogin)) {
+            throw new RuntimeException(); // todo
+        }
         itemEntity.setStatusCode(statusCode);
         repository.save(itemEntity);
     }

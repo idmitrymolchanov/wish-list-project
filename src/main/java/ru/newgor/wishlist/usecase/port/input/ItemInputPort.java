@@ -20,5 +20,5 @@ public interface ItemInputPort {
 
     void reserveItem(UUID id, Boolean reserved);
 
-    void setItemStatus(UUID id, String statusCode);
+    void setItemStatus(UUID id, String statusCode, String userLogin);
 }

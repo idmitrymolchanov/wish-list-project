@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.newgor.wishlist.domain.enums.ItemStatusEnum;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class ItemModel {
     private int priority;
     private String priorityName;
     private String image;
-    private ItemStatusEnum status;
+    private String statusCode;
     private boolean reserved;
     private Instant createDate;
     private Instant lastUpdateDate;

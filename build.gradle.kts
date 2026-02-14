@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ru.newgor"
-version = "1.0.1-SNAPSHOT"
+version = "1.1.0-SNAPSHOT"
 description = "Wishlist project"
 
 java {

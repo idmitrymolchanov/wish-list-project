@@ -12,10 +12,15 @@ import java.util.List;
 public interface ItemMapper {
 
     @Mapping(target = "statusCode", constant = "OPEN")
-//    @Mapping(target = "currency", source = "currency")
     ItemEntity toItemEntity(ItemModel itemModel);
 
     ItemModel toItemModel(ItemEntity itemEntity);
 
-    List<ItemBaseInfoModel> toItemBaseInfoList(List<ItemEntity> itemEntities);
+    @Mapping(target = ".", source = "itemEntity")
+    @Mapping(target = "reserved", source = "itemEntity.reserved", conditionExpression = "java(showReservedStatus)")
+    ItemBaseInfoModel toItemBaseInfo(ItemEntity itemEntity, boolean showReservedStatus);
+
+    default List<ItemBaseInfoModel> toItemBaseInfoList(List<ItemEntity> itemEntities, boolean showReservedStatus) {
+        return itemEntities.stream().map(item -> toItemBaseInfo(item, showReservedStatus)).toList();
+    }
 }

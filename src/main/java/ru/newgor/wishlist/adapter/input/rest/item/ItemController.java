@@ -63,10 +63,10 @@ public class ItemController implements ItemsApi {
     public Resource getItemImage(UUID id) {
         log.debug("Got image content with id {}", id);
         var result = imageService.getImage(id);
-        var contentDisposition =
-                ContentDisposition.inline().filename(result.getFilename()).build();
-
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        if(result != null) {
+            var contentDisposition = ContentDisposition.inline().filename(result.getFilename()).build();
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        }
         return result;
     }
 
@@ -89,7 +89,8 @@ public class ItemController implements ItemsApi {
 
     @Override
     public void setItemStatus(UUID id, String statusCode) {
-        inputPort.setItemStatus(id, statusCode);
+        var userLogin = jwtService.extractLogin(getAuthToken());
+        inputPort.setItemStatus(id, statusCode, userLogin);
     }
 
     @Override

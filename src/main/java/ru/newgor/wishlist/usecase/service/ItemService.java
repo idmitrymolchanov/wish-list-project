@@ -45,8 +45,8 @@ public class ItemService implements ItemInputPort {
     }
 
     @Override
-    public void setItemStatus(UUID id, String statusCode) {
-        persistence.setItemStatus(id, statusCode);
+    public void setItemStatus(UUID id, String statusCode, String userLogin) {
+        persistence.setItemStatus(id, statusCode, userLogin);
     }
 
     private String definePriorityName(int priority) {

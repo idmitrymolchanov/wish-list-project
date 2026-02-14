@@ -22,4 +22,5 @@ public class ImageEntity {
     private UUID id;
     private String name;
     private String path;
+    private UUID itemId;
 }
