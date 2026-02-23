@@ -16,7 +16,7 @@ public class ItemModel {
 
     private UUID id;
     private String name;
-    private String amount;
+    private Double amount;
     private String currency;
     private String description;
     private String linkToSite;

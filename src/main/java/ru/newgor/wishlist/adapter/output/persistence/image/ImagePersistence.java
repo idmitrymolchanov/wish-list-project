@@ -35,7 +35,7 @@ public class ImagePersistence {
     @SneakyThrows
     public Resource getImage(UUID itemId) {
         var item = repository.findByItemId(itemId).orElse(null);
-        if(item == null) {
+        if (item == null) {
             return null;
         }
         FileSystemResource resource = new FileSystemResource(item.getPath());
@@ -68,13 +68,17 @@ public class ImagePersistence {
         imageEntity.setPath(filePath.toString());
         repository.save(imageEntity);
 
-        if(oldImage != null) {
-            deleteFileAsync(oldImage.getPath(), oldImage.getId());
+        if (oldImage != null) {
+            deleteImageAsync(oldImage.getPath(), oldImage.getId());
         }
     }
 
+    public void deleteImage(UUID itemId) {
+        repository.findByItemId(itemId).ifPresent(item -> deleteImageAsync(item.getPath(), item.getId()));
+    }
+
     @Async
-    public void deleteFileAsync(String path, UUID id) {
+    public void deleteImageAsync(String path, UUID id) {
         try {
             Files.deleteIfExists(Paths.get(path));
             repository.deleteById(id);

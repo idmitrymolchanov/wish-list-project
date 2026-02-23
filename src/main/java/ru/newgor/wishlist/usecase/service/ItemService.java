@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemService implements ItemInputPort {
 
-    private final ItemPersistence persistence; // todo -> outputPort
+    private final ItemPersistence persistence;
 
     @Override
     public UUID createItem(ItemModel item, String userLogin) {
@@ -30,13 +30,18 @@ public class ItemService implements ItemInputPort {
     }
 
     @Override
-    public List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus) {
-        return persistence.getItems(userLogin, statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus);
+    public List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus, String sort) {
+        return persistence.getItems(userLogin, statusCode, createDateFrom == null ? null : createDateFrom.toInstant(), createDateTo == null ? null : createDateTo.toInstant(), limit, offset, showReservedStatus, sort);
     }
 
     @Override
-    public void patchItem(UUID id, ItemUpdateModel itemUpdate) {
+    public void patchItem(UUID id, ItemUpdateModel itemUpdate, String userLogin) {
+        persistence.updateItem(id, itemUpdate, userLogin);
+    }
 
+    @Override
+    public void deleteItem(UUID id, String userLogin) {
+        persistence.deleteItem(id, userLogin);
     }
 
     @Override

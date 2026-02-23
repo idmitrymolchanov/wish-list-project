@@ -7,34 +7,34 @@ spring:
     multipart:
       max-file-size: 140KB
       max-request-size: 140KB
-  #      data-path: "./data/wishlist"
+#      data-path: "./data/wishlist"
+
+#  datasource:
+#    url: jdbc:h2:file:./data/wishlist;CIPHER=AES
+#    username: sa
+#    password: password filepassword
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+#    show-sql: false
 
   datasource:
-    url: jdbc:h2:file:./data/wishlist;CIPHER=AES
+    url: jdbc:h2:mem:wishlist
     username: sa
-    password: password filepassword
-    driver-class-name: org.h2.Driver
+    password:
 
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-    show-sql: false
-
-  #  datasource:
-  #    url: jdbc:h2:mem:wishlist
-  #    username: sa
-  #    password:
-  #
-  #  jpa:
-  #    defer-datasource-initialization: true
-  #    hibernate:
-  #      ddl-auto: update
-  #    properties:
-  #      hibernate:
-  #        dialect: org.hibernate.dialect.H2Dialect
 
   liquibase:
     enabled: false
@@ -49,4 +49,4 @@ server:
   port: 8085
 
 image:
-  data-path: "/home/newgor/wishlist/images"
+  data-path: "/Users/home/IdeaProjects/wish-list-project/src/main/resources/images"

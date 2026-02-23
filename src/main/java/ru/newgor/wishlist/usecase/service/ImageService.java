@@ -26,4 +26,8 @@ public class ImageService {
     public Resource getImage(UUID id) {
         return imagePersistence.getImage(id);
     }
+
+    public void deleteImage(UUID itemId) {
+        imagePersistence.deleteImage(itemId);
+    }
 }

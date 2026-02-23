@@ -412,6 +412,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommonFault'
+    delete:
+      tags:
+        - Items
+      summary: Удалить предмет
+      description: Метод для удаления предмета
+      operationId: deleteItem
+      security:
+        - Authorization: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор предмета
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |
+            - Bad Request,
+              code: 00001,
+              message: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '404':
+          description: |
+            - Not Found,
+              code: 14001,
+              message: Предмет не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
+        '500':
+          description: |
+            - code: 00005
+              message: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonFault'
 
   /wishlist/item/{id}/status:
     post:
@@ -568,10 +613,16 @@ components:
       enum:
         - CREATE_DATE
         - PRIORITY
+        - AMOUNT
 
     ItemBaseInfo:
       type: object
       description: Базовая информация о предмете
+      required:
+        - name
+        - amount
+        - currency
+        - priority
       properties:
         id:
           type: string
@@ -589,8 +640,11 @@ components:
           type: string
           description: наименование
         amount:
-          type: string
+          type: number
           description: сумма
+        currency:
+          type: string
+          description: валюта
         reserved:
           type: boolean
           description: зарезервирован ли товар

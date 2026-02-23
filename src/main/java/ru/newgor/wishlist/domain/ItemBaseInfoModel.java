@@ -7,6 +7,7 @@ public record ItemBaseInfoModel(
         UUID id,
         String name,
         String amount,
+        String currency,
         boolean reserved,
         Instant createDate,
         int priority,

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,6 +55,15 @@ public class ItemController implements ItemsApi {
     }
 
     @Override
+    @Transactional
+    public void deleteItem(UUID id) {
+        var userLogin = jwtService.extractLogin(getAuthToken());
+        inputPort.deleteItem(id, userLogin);
+        imageService.deleteImage(id);
+        log.info("item deleted: id={}, login={}", id, userLogin);
+    }
+
+    @Override
     public Item getItemById(UUID id) {
         var response = inputPort.getItemById(id);
         return mapper.toItemDto(response);
@@ -72,14 +82,15 @@ public class ItemController implements ItemsApi {
 
     @Override
     public GetItems200Response getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus, SortField sortField) {
-        var response = inputPort.getItems(userLogin, statusCode, createDateFrom, createDateTo, limit, offset, showReservedStatus);
+        var response = inputPort.getItems(userLogin, statusCode, createDateFrom, createDateTo, limit, offset, showReservedStatus, sortField == null ? null : sortField.getValue());
         return mapper.toGetItems200Response(response);
     }
 
     @Override
     public void patchItem(UUID id, ItemUpdate itemUpdate) {
+        var userLogin = jwtService.extractLogin(getAuthToken());
         var request = mapper.toItemUpdateModel(itemUpdate);
-        inputPort.patchItem(id, request);
+        inputPort.patchItem(id, request, userLogin);
     }
 
     @Override

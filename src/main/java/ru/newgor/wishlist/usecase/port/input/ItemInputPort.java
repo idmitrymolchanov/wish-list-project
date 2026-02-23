@@ -14,9 +14,11 @@ public interface ItemInputPort {
 
     ItemModel getItemById(UUID id);
 
-    List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus);
+    List<ItemBaseInfoModel> getItems(String userLogin, String statusCode, OffsetDateTime createDateFrom, OffsetDateTime createDateTo, Integer limit, Integer offset, Boolean showReservedStatus, String sort);
 
-    void patchItem(UUID id, ItemUpdateModel itemUpdate);
+    void patchItem(UUID id, ItemUpdateModel itemUpdate, String userLogin);
+
+    void deleteItem(UUID id, String userLogin);
 
     void reserveItem(UUID id, Boolean reserved);
 

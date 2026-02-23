@@ -18,7 +18,7 @@ public class ItemUpdateModel {
     private Instant createDate;
     private Instant lastUpdateDate;
     private String name;
-    private String amount;
+    private Double amount;
     private Boolean reserved;
     private String priority;
     private String priorityName;

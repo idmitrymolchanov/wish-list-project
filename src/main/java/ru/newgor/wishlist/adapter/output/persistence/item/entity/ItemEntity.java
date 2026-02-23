@@ -27,7 +27,7 @@ public class ItemEntity extends AuditableEntity {
     private UUID id;
 
     private String name;
-    private String amount;
+    private Double amount;
     private String currency;
     private String description;
     private int priority;
